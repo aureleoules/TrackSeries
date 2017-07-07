@@ -39,7 +39,7 @@ class Tabbar extends React.Component {
                 titleStyle={{fontWeight: 'bold', fontSize: 10}}
                 selectedTitleStyle={{marginTop: -1, marginBottom: 6}}
                 selected={selectedTab === 'mySeries'}
-                title={selectedTab === 'mySeries' ? 'MY SERIES' : null}
+                title={selectedTab === 'mySeries' ? 'MY TV SHOWS' : null}
                 renderIcon={() => <Icon containerStyle={{justifyContent: 'center', alignItems: 'center', marginTop: 12}} color={'#5e6977'} name='view-list' size={33} />}
                 renderSelectedIcon={() => <Icon color={'#6296f9'} name='view-list' size={30} />}
                 onPress={() => this.changeTab('mySeries')}>

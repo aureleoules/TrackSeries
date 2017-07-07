@@ -42,5 +42,21 @@ export default RestClient = {
                 if(err) throw err;
             })
         });
+    },
+    getSeries: function(cb) {
+        AuthService.getAuthorizationToken(token => {
+            axios({
+                method: 'get',
+                url: API_ENDPOINT + "/Follow/Series",
+                headers: {
+                    'apikey': apikey,
+                    Authorization: "bearer " + token
+                }
+            }).then(response => {
+                cb(response.data);
+            }).catch(err => {
+                if(err) throw err;
+            });
+        });
     }
 }
