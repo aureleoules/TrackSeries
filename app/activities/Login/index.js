@@ -3,12 +3,16 @@ import TitleBar from '../../components/TitleBar';
 import {View, Text} from 'react-native';
 import { FormLabel, FormInput, Button} from 'react-native-elements'
 import AuthService from '../../services/AuthService';
+var Events = require('react-native-simple-events');
+
 class Login extends React.Component {
 
     signIn = () => {
         AuthService.signIn(this.state.username.trim(), this.state.password.trim(), result => {
             if(result !== "error") {
-                console.log("ok");
+                AuthService.saveToken(result.data.access_token);
+                this.props.setLoggedIn();
+
             } else {
                 console.log("Wrong password!");
             }

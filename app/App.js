@@ -11,23 +11,33 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isAuth: null
+            
         };
     }
     
     componentDidMount() {
         AuthService.isAuthenticated(isAuth => {
+            console.log(isAuth);
             this.setState({isAuth});
         });
+
+    }
+
+    setLoggedIn = () => {
+        this.setState({isAuth: true});
+        console.log("logged in!");
+    }
+
+    removeToken = () => {
+        AuthService.signOut();
     }
 
     render() {
         return (
             <View style={{flex: 1}}>
                 <TitleBar/>
-
                 {this.state.isAuth && <Tabbar/>}
-                {!this.state.isAuth && <Login/>}
+                {this.state.isAuth == false && <Login setLoggedIn={this.setLoggedIn}/>}
             </View>
         );
     }

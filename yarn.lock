@@ -3079,6 +3079,10 @@ react-native-side-menu@^0.20.1:
   version "0.20.3"
   resolved "https://registry.yarnpkg.com/react-native-side-menu/-/react-native-side-menu-0.20.3.tgz#5dffe3e237018360ed081433d505ea454cba9ca4"
 
+react-native-simple-events@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-simple-events/-/react-native-simple-events-1.0.1.tgz#7e636ccd1b7e03029cb78dc9d59d0009f73a3bd6"
+
 react-native-tab-bar@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/react-native-tab-bar/-/react-native-tab-bar-1.2.2.tgz#15e1acf1fddd1e786e1da95ccf0ae170d9bd9f93"

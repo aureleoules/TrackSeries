@@ -24,7 +24,7 @@ class Tabbar extends React.Component {
         const tabBarHeight = 50;
 
         return (
-            <Tabs sceneStyle={{paddingTop: 70, marginLeft: 5, marginRight: 5, marginBottom: 5}}>
+            <Tabs sceneStyle={{paddingTop: 69, marginLeft: 5, marginRight: 5, marginBottom: 5}}>
             <Tab
                 titleStyle={{fontWeight: 'bold', fontSize: 10}}
                 selectedTitleStyle={{marginTop: -1, marginBottom: 6}}

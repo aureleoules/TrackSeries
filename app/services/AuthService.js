@@ -10,6 +10,7 @@ const AuthService = {
     isAuthenticated: function(cb) {
         try {
             AsyncStorage.getItem('Authorization').then(token => {
+                console.log(token);
                 cb(!!token);
             });
         } catch (error) {
@@ -22,6 +23,21 @@ const AuthService = {
                 cb(token);
             });
         } catch (error) {
+            if(error) throw error;
+        }
+    },
+    saveToken: function(token) {
+        try {
+            AsyncStorage.setItem('Authorization', token);
+        } catch (error) {
+            if(error) throw error;
+        }
+    },
+    signOut: function() {
+        try {
+            AsyncStorage.setItem('Authorization', "");
+        } catch (error) {
+            console.log(error);
             if(error) throw error;
         }
     }
