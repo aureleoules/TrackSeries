@@ -2,6 +2,7 @@ import React from 'react';
 import {View, FlatList} from 'react-native';
 import RestClient from '../../services/RestClient';
 import {Card, Button, Text, Image} from 'react-native-elements';
+import Serie from '../../components/Serie';
 
 class MySeries extends React.Component {
 
@@ -17,13 +18,7 @@ class MySeries extends React.Component {
     }
     renderItem({ item, index }) {
         return (
-            <Card
-                title={item.name}
-                image={{uri:item.images.fanart}}>
-            <Text style={{marginBottom: 10}}>
-                {item.overview}
-            </Text>
-            </Card>
+            <Serie myseries serie={item}/>
         );
     }
      _keyExtractor = (item, index) => item.imdbId;

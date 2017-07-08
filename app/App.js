@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, StatusBar} from 'react-native';
 import TitleBar from './components/TitleBar';
 import Tabbar from './components/Tabbar';
 import { Button } from 'react-native-elements'
@@ -33,6 +33,7 @@ class App extends React.Component {
     render() {
         return (
             <View style={{flex: 1, backgroundColor: "#F0F3F4"}}>
+                <StatusBar backgroundColor="#154468"/>
                 <TitleBar/>
                 {this.state.isAuth && <Tabbar/>}
                 {this.state.isAuth == false && <Login setLoggedIn={this.setLoggedIn}/>}

@@ -21,7 +21,7 @@ class Login extends React.Component {
 
     render() {
         return(
-            <View style={{flex: 1, paddingTop: 70}}>
+            <View style={{flex: 1, paddingTop: 69}}>
                 <Text style={styles.textTitle}>Sign In</Text>
                 <TitleBar/>
                 <FormLabel>USERNAME OR EMAIL</FormLabel>

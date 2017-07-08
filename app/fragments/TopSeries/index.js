@@ -1,38 +1,27 @@
 import React from 'react';
 import {View, FlatList} from 'react-native';
 import RestClient from '../../services/RestClient';
-import {Card, Button, Text, Image, Divider} from 'react-native-elements';
+import Serie from '../../components/Serie';
 
 class TopSeries extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {};
+        this.getSeries = this.getSeries.bind(this);
     }
-
-    componentDidMount() {
+    getSeries = () => {
         RestClient.getTopSeries(series => {
             this.setState({series});
-            console.log(series);    
+            return true;
         });
     }
-
-    renderItem({ item, index }) {
+    componentDidMount() {
+        this.getSeries();
+    }
+    
+    renderItem({ item, index }, context) {
         return (
-            <Card
-                title={item.name}
-                image={{uri:item.images.fanart}}>
-            <Text style={{marginBottom: 10}}>
-                {item.overview}
-            </Text>
-            {/*<Divider style={{ backgroundColor: '#194C73' }} />*/}
-            <View
-                style={{paddingLeft: 15, paddingRight: 15, flex: 1, flexDirection: "row", justifyContent: "space-between"}}>
-                <Text style={{fontSize: 30}}>{item.firstAired.substring(0, 4)}</Text>
-                <Button title="SUBSCRIBE"/>    
-                <Text style={{fontSize: 30}}>{item.country.toUpperCase()}</Text>
-            </View>
-            </Card>
+            <Serie serie={item} getSeries={context.getSeries}/>
         );
     }
      _keyExtractor = (item, index) => item.imdbId;
@@ -43,7 +32,7 @@ class TopSeries extends React.Component {
                 {this.state.series && 
                 <FlatList
                     data={this.state.series}
-                    renderItem={this.renderItem}
+                    renderItem={({item, index}) => this.renderItem({item, index}, this)}
                     keyExtractor={this._keyExtractor}
                 />
                 }

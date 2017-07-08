@@ -19,7 +19,6 @@ export default RestClient = {
                 'apikey': apikey
             }
         }).then(response => {
-            console.log(response);
             cb(response);
         }).catch(err => {
             console.log(err);
@@ -60,16 +59,35 @@ export default RestClient = {
         });
     },
     getTopSeries: function(cb) {
-        axios({
-            method: 'get',
-            url: API_ENDPOINT + "/Stats/TopSeries",
-            headers: {
-                'apikey': apikey
-            }
-        }).then(response => {
-            cb(response.data);
-        }).catch(err => {
-            if(err) throw err;
+        AuthService.getAuthorizationToken(token => {
+            axios({
+                method: 'get',
+                url: API_ENDPOINT + "/Stats/TopSeries",
+                headers: {
+                    'apikey': apikey,
+                    Authorization: "bearer " + token
+                }
+            }).then(response => {
+                cb(response.data);
+            }).catch(err => {
+                if(err) throw err;
+            });
+        });
+    },
+    followSerie: function(serieID, cb) {
+        AuthService.getAuthorizationToken(token => {
+            axios({
+                method: 'post',
+                url: API_ENDPOINT + "/Follow/Series/" + serieID,
+                headers: {
+                    apikey: apikey,
+                    Authorization: "bearer " + token
+                }
+            }).then(response => {
+                cb(response.data);
+            }).catch(err => {
+                if(err) throw err;
+            });
         });
     }
 }
