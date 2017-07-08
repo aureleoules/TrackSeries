@@ -17,7 +17,6 @@ class App extends React.Component {
     
     componentDidMount() {
         AuthService.isAuthenticated(isAuth => {
-            console.log(isAuth);
             this.setState({isAuth});
         });
 
@@ -25,7 +24,6 @@ class App extends React.Component {
 
     setLoggedIn = () => {
         this.setState({isAuth: true});
-        console.log("logged in!");
     }
 
     removeToken = () => {
@@ -34,7 +32,7 @@ class App extends React.Component {
 
     render() {
         return (
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, backgroundColor: "#F0F3F4"}}>
                 <TitleBar/>
                 {this.state.isAuth && <Tabbar/>}
                 {this.state.isAuth == false && <Login setLoggedIn={this.setLoggedIn}/>}

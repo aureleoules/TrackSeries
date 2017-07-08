@@ -10,7 +10,6 @@ const AuthService = {
     isAuthenticated: function(cb) {
         try {
             AsyncStorage.getItem('Authorization').then(token => {
-                console.log(token);
                 cb(!!token);
             });
         } catch (error) {

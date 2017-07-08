@@ -58,5 +58,18 @@ export default RestClient = {
                 if(err) throw err;
             });
         });
+    },
+    getTopSeries: function(cb) {
+        axios({
+            method: 'get',
+            url: API_ENDPOINT + "/Stats/TopSeries",
+            headers: {
+                'apikey': apikey
+            }
+        }).then(response => {
+            cb(response.data);
+        }).catch(err => {
+            if(err) throw err;
+        });
     }
 }
