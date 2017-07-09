@@ -1,22 +1,25 @@
 import React from 'react';
-import {View, FlatList} from 'react-native';
+import {View, FlatList, RefreshControl, ActivityIndicator} from 'react-native';
 import RestClient from '../../services/RestClient';
 import Serie from '../../components/Serie';
 
 class TopSeries extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
-        this.getSeries = this.getSeries.bind(this);
-    }
-    getSeries = () => {
-        RestClient.getTopSeries(series => {
-            this.setState({series});
-            return true;
-        });
+        this.state = {
+            refreshing: false
+        };
     }
     componentDidMount() {
-        this.getSeries();
+        RestClient.getTopSeries(series => {
+            this.setState({series});
+        });
+    }
+
+    getSeries = () => {
+        RestClient.getTopSeries(series => {
+            this.setState({series});    
+        });
     }
     
     renderItem({ item, index }, context) {
@@ -25,7 +28,14 @@ class TopSeries extends React.Component {
         );
     }
      _keyExtractor = (item, index) => item.imdbId;
-    
+
+    _onRefresh() {
+        this.setState({refreshing: true});
+        RestClient.getTopSeries(series => {
+            this.setState({series});
+            this.setState({refreshing: false});    
+        });
+    }
     render() {
         return (
             <View>
@@ -34,8 +44,21 @@ class TopSeries extends React.Component {
                     data={this.state.series}
                     renderItem={({item, index}) => this.renderItem({item, index}, this)}
                     keyExtractor={this._keyExtractor}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh.bind(this)}
+                            colors={["#194C73"]}
+                        />
+                    }
                 />
                 }
+                <ActivityIndicator 
+                    style={{alignSelf: 'center', marginTop: "60%"}}
+                    animating={!this.state.series}
+                    color="#194C73"
+                    size={50}
+                />
             </View>
         );
     }

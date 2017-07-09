@@ -1,7 +1,8 @@
 import React from 'react';
 import {Card, Button, Text, Image, Divider, Icon} from 'react-native-elements';
-import {View} from 'react-native';
+import {View, TouchableOpacity  } from 'react-native';
 import RestClient from '../../services/RestClient';
+import { Actions } from 'react-native-router-flux';
 
 class Serie extends React.Component {
 
@@ -11,8 +12,7 @@ class Serie extends React.Component {
 
     followSerie = serieID => {
         RestClient.followSerie(this.props.serie.tvdbId, response => {
-            console.log(response);
-            console.log(this.props.getSeries());;
+            this.props.getSeries();
         });
     }
 
@@ -44,27 +44,35 @@ class Serie extends React.Component {
         }
     }
 
+    goToSerie = () => {
+        Actions.SeriePage({type: 'push', serieId: this.props.serie.tvdbId, serieName: this.props.serie.name, followedByUser: this.props.serie.followedByUser});
+    }
+
     render() {
         return(
-            <Card
-                titleStyle={styles.serieTitle}
-                title={this.props.serie.name}
-                image={{uri:this.props.serie.images.fanart}}>
-            <Text style={{marginBottom: 10}}>
-                {this.props.serie.overview}
-            </Text>
-                <View style={styles.serieInfoContainer}>
-                    <View>
-                        <Text style={styles.serieInfoText}>{this.props.serie.firstAired.substring(0, 4)}</Text>
-                        <Text style={styles.subInfoText}>Year</Text>
+            <TouchableOpacity  
+                activeOpacity={0.8}
+                onPress={() => {this.goToSerie()}}>
+                <Card
+                    titleStyle={styles.serieTitle}
+                    title={this.props.serie.name}
+                    image={{uri:this.props.serie.images.fanart}}>
+                <Text style={{marginBottom: 10}}>
+                    {this.props.serie.overview.substr(0, 200) + "..."}
+                </Text>
+                    <View style={styles.serieInfoContainer}>
+                        <View>
+                            <Text style={styles.serieInfoText}>{this.props.serie.firstAired.substring(0, 4)}</Text>
+                            <Text style={styles.subInfoText}>Year</Text>
+                        </View>
+                        {this.getMiddleComponent()}
+                        <View>
+                            <Text style={styles.serieInfoText}>{this.props.serie.country.toUpperCase()}</Text>
+                            <Text style={styles.subInfoText}>Country</Text>
+                        </View>
                     </View>
-                    {this.getMiddleComponent()}
-                    <View>
-                        <Text style={styles.serieInfoText}>{this.props.serie.country.toUpperCase()}</Text>
-                        <Text style={styles.subInfoText}>Country</Text>
-                    </View>
-                </View>
-            </Card>
+                </Card>
+            </TouchableOpacity  >
         )
     }
 }

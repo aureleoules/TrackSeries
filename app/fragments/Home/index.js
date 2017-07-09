@@ -12,6 +12,7 @@ class Home extends React.Component {
     }
     componentDidMount() {
         RestClient.getUnwatchedEpisodes(response => {
+            console.log(response);
             this.setState({series: response});
             this.makeEpisodes();
         });
@@ -25,14 +26,6 @@ class Home extends React.Component {
         });
         this.setState({episodes: episodes});
         return episodes;
-                    
-
-        // const cards = this.state.series[0].episodes.map((e, i) => {
-        //     return(
-        //         
-        //     );
-        // });
-        // return cards;
     }
 
     renderItem({ item, index }) {

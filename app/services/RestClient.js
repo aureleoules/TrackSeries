@@ -89,5 +89,37 @@ export default RestClient = {
                 if(err) throw err;
             });
         });
-    }
+    },
+    getFollowedSerie: function(serieId, cb) {
+        AuthService.getAuthorizationToken(token => {
+            axios({
+                method: 'get',
+                url: API_ENDPOINT + "/Follow/Series/" + serieId + "/extended",
+                headers: {
+                    apikey: apikey,
+                    Authorization: "bearer " + token
+                }
+            }).then(response => {
+                cb(response.data);
+            }).catch(err => {
+                if(err) throw err;
+            });
+        })
+    },
+    getSerie: function(serieId, cb) {
+        AuthService.getAuthorizationToken(token => {
+            axios({
+                method: 'get',
+                url: API_ENDPOINT + "/Series/" + serieId + "/all",
+                headers: {
+                    apikey: apikey,
+                    Authorization: "bearer " + token
+                }
+            }).then(response => {
+                cb(response.data);
+            }).catch(err => {
+                if(err) throw err;
+            });
+        })
+    },
 }
