@@ -2,7 +2,7 @@ import React from 'react';
 import {View, FlatList} from 'react-native';
 import {Card, Button, Text, Image} from 'react-native-elements';
 import RestClient from '../../services/RestClient';
-
+import Episode from '../../components/Episode';
 class Home extends React.Component {
     constructor(props) {
         super(props);
@@ -12,7 +12,6 @@ class Home extends React.Component {
     }
     componentDidMount() {
         RestClient.getUnwatchedEpisodes(response => {
-            console.log(response);
             this.setState({series: response});
             this.makeEpisodes();
         });
@@ -30,22 +29,10 @@ class Home extends React.Component {
 
     renderItem({ item, index }) {
         return (
-            <Card
-                title={item.serieName + " | S" + ("0" + item.seasonNumber).slice(-2) + "E" + ("0" + item.number).slice(-2)}
-                image={{uri:item.image}}>
-            <Text style={{marginBottom: 10}}>
-                {item.overview}
-            </Text>
-            <Button
-            icon={{name: 'remove-red-eye'}}
-            backgroundColor='#133E5F'
-            fontFamily='Lato'
-            buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-            title="I've watched this." />
-            </Card>
+            <Episode episode={item}/>
         );
     }
-     _keyExtractor = (item, index) => item.imdbId;
+     _keyExtractor = (item, index) => item.id;
     render() {
         return (
             <View>

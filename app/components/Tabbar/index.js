@@ -38,7 +38,7 @@ class Tabbar extends React.Component {
         return (
             <View style={{flex: 1}}>
                 <TitleBar logo/>
-                <Tabs tabBarStyle={{backgroundColor: "#fafafa"}} sceneStyle={{paddingTop: 69, marginLeft: 5, marginRight: 5}}>
+                <Tabs tabBarStyle={{backgroundColor: "#fafafa"}} sceneStyle={{paddingTop: 69, marginLeft: 0, marginRight: 0}}>
                 <Tab
                     titleStyle={styles.title}
                     selectedTitleStyle={styles.selectedTitle}
