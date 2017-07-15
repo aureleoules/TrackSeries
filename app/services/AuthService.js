@@ -7,6 +7,11 @@ const AuthService = {
             cb(response);
         });
     },
+    signUp: function(username, password, email, cb) {
+        RestClient.signUp(username, password, email, response => {
+            cb(response);
+        });
+    },
     isAuthenticated: function(cb) {
         try {
             AsyncStorage.getItem('Authorization').then(token => {
@@ -32,9 +37,10 @@ const AuthService = {
             if(error) throw error;
         }
     },
-    signOut: function() {
+    signOut: function(cb) {
         try {
             AsyncStorage.setItem('Authorization', "");
+            cb();
         } catch (error) {
             console.log(error);
             if(error) throw error;

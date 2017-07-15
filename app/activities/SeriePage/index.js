@@ -4,7 +4,7 @@ import { Actions } from 'react-native-router-flux';
 import TitleBar from '../../components/TitleBar';
 import Episode from '../../components/Episode';
 import RestClient from '../../services/RestClient';
-import {Tile, Text} from 'react-native-elements';
+import {Tile, Text, Button} from 'react-native-elements';
 
 class SeriePage extends React.Component {
     
@@ -16,21 +16,30 @@ class SeriePage extends React.Component {
         };
     }
     componentWillMount() {
-        const serieId = this.props.serieId;
-        if(this.props.followedByUser) {
-            RestClient.getFollowedSerie(serieId, serie => {
-                console.log(serie);
-                this.setState({serie});
-                this.makeOverview();
-            });        
-        } else {
-            RestClient.getSerie(serieId, serie => {
-                console.log(serie);
-                this.setState({serie});
-                this.makeOverview();
-            });
-        }
+        this.getSeries();
     }
+
+    getSeries = () => {
+        const serieId = this.props.serieId;
+        RestClient.getFollowedSerie(serieId, serie => {
+            console.log(serie);
+            if(serie !== "error") {
+                this.setState({serie});
+                this.makeOverview();
+                console.log(serie);
+                this.setState({isFollowed: true});
+            } else {
+                RestClient.getSerie(serieId, serie => {
+                    console.log(serie);
+                    this.setState({serie});
+                    this.makeOverview();
+                    this.setState({isFollowed: false});
+
+                });
+            }
+        });  
+    }
+
     selectSeason = index => {
         this.setState({selectedSeason: index})
     }
@@ -48,9 +57,8 @@ class SeriePage extends React.Component {
         );
     }
     renderEpisode({item, index}) {
-        console.log(item);
         return(
-            <Episode episode={item}/>
+            <Episode episode={item} refreshEpisodes={this.getSeries}/>
         );
     }
 
@@ -66,9 +74,20 @@ class SeriePage extends React.Component {
         }
     }  
 
+    followShow = () => {
+        RestClient.followSerie(this.state.serie.tvdbId, response => {
+            this.getSeries();
+        });
+    }
 
-     _keyExtractor = (item, index) => item.seasonNumber;
-     _keyExtractor2 = (item, index) => item.number;
+    unfollowShow = () => {
+        RestClient.unFollowSerie(this.state.serie.tvdbId, response => {
+            this.getSeries();
+        });
+    }
+
+    _keyExtractor = (item, index) => item.seasonNumber;
+    _keyExtractor2 = (item, index) => item.number;
 
     render() {
         return(
@@ -93,8 +112,25 @@ class SeriePage extends React.Component {
                             keyExtractor={this._keyExtractor}
 
                         />
-                        <Text style={{textAlign: "center", fontSize: 35, fontFamily: "sans-serif-light", margin: 10}}>Season {this.state.selectedSeason + 1}</Text>
-                        
+                        <View style={{marginBottom: 10}}>
+                            {!this.state.isFollowed &&
+                            <Button
+                                buttonStyle={{marginTop: 10}}
+                                backgroundColor="#143E5E"
+                                icon={{name: 'plus', type: "font-awesome"}}
+                                title='Follow serie'
+                                onPress={() => this.followShow()} />
+                            }
+                            {this.state.isFollowed &&
+                            <Button
+                                buttonStyle={{marginTop: 10}}
+                                backgroundColor="#EE3939"
+                                icon={{name: 'times-circle-o', type: "font-awesome"}}
+                                title='Unfollow show'
+                                onPress={() => {this.unfollowShow()}} />
+                            }
+                            <Text style={{textAlign: "center", fontSize: 35, fontFamily: "sans-serif-light"}}>Season {this.state.selectedSeason + 1}</Text>
+                        </View>
                         <FlatList
                             data={this.state.serie.seasons[this.state.selectedSeason].episodes}
                             renderItem={({item, index}) => this.renderEpisode({item, index})}

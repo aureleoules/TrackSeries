@@ -8,10 +8,11 @@ class Serie extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {};
     }
 
     followSerie = serieID => {
-        RestClient.followSerie(this.props.serie.tvdbId, response => {
+        RestClient.followSerie(this.state.serieId, response => {
             this.props.getSeries();
         });
     }
@@ -44,8 +45,45 @@ class Serie extends React.Component {
         }
     }
 
+    getRightComponent = () => {
+        if(this.props.minimal) {
+            return (
+                <View>
+                    <Text style={styles.serieInfoText}>{this.props.serie.network}</Text>
+                    <Text style={styles.subInfoText}>Network</Text>
+                </View>
+            );
+        } else {
+            return (
+                <View>
+                    <Text style={styles.serieInfoText}>{this.props.serie.country ? this.props.serie.country.toUpperCase() : "Unavailable"}</Text>
+                    <Text style={styles.subInfoText}>Country</Text>
+                </View>
+            );
+        }
+    }
+
     goToSerie = () => {
-        Actions.SeriePage({type: 'push', serieId: this.props.serie.tvdbId, serieName: this.props.serie.name, followedByUser: this.props.serie.followedByUser});
+        Actions.SeriePage({
+            type: 'push', 
+            serieId: this.state.serieId, 
+            serieName: this.props.serie.name, 
+            followedByUser: this.props.serie.followedByUser,
+            fromMySeries: this.props.myseries
+        });
+    }
+    componentDidMount() {
+        this.setState({serieId: this.props.minimal ? this.props.serie.id : this.props.serie.tvdbId});
+    }
+
+    getLeftComponent = () => {
+        const firstAired = this.props.serie.firstAired ? this.props.serie.firstAired.substring(0, 4) : "Unavailable";
+        return (
+            <View>
+                <Text style={styles.serieInfoText}>{firstAired}</Text>
+                <Text style={styles.subInfoText}>Year</Text>
+            </View>
+        );    
     }
 
     render() {
@@ -56,20 +94,14 @@ class Serie extends React.Component {
                 <Card
                     titleStyle={styles.serieTitle}
                     title={this.props.serie.name}
-                    image={{uri:this.props.serie.images.fanart}}>
+                    image={{uri: this.props.minimal === true ? this.props.serie.banner.replace(".jpg", "_medium.jpg") : this.props.serie.images.fanart.replace(".jpg", "_small.jpg")}}>
                 <Text style={{marginBottom: 10}}>
                     {this.props.serie.overview.substr(0, 200) + "..."}
                 </Text>
                     <View style={styles.serieInfoContainer}>
-                        <View>
-                            <Text style={styles.serieInfoText}>{this.props.serie.firstAired.substring(0, 4)}</Text>
-                            <Text style={styles.subInfoText}>Year</Text>
-                        </View>
+                        {this.getLeftComponent()}
                         {this.getMiddleComponent()}
-                        <View>
-                            <Text style={styles.serieInfoText}>{this.props.serie.country.toUpperCase()}</Text>
-                            <Text style={styles.subInfoText}>Country</Text>
-                        </View>
+                        {this.getRightComponent()}
                     </View>
                 </Card>
             </TouchableOpacity  >

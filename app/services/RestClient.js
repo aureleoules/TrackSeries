@@ -26,6 +26,26 @@ export default RestClient = {
             if(err) throw err;
         });
     },
+    signUp: function(username, password, email, cb) {
+        axios({
+            method: "post",
+            url: API_ENDPOINT + "/Account/Register",
+            data: {
+                email: email,
+                username: username,
+                confirmPassword: password,
+                password: password
+            },
+            headers: {
+                'apikey': apikey
+            }
+        }).then(response => {
+            cb(response.data);
+        }).catch(err => {
+            console.log(err);
+            if(err) cb("error");
+        });
+    },
     getUnwatchedEpisodes: function(cb) {
         AuthService.getAuthorizationToken(token => {
             axios({
@@ -80,7 +100,24 @@ export default RestClient = {
                 method: 'post',
                 url: API_ENDPOINT + "/Follow/Series/" + serieID,
                 headers: {
-                    apikey: apikey,
+                    "apikey": apikey,
+                    Authorization: "bearer " + token
+                }
+            }).then(response => {
+                cb(response.data);
+            }).catch(err => {
+                console.log(err);
+                if(err) throw err;
+            });
+        });
+    },
+    unFollowSerie: function(serieID, cb) {
+        AuthService.getAuthorizationToken(token => {
+            axios({
+                method: 'delete',
+                url: API_ENDPOINT + "/Follow/Series/" + serieID,
+                headers: {
+                    "apikey": apikey,
                     Authorization: "bearer " + token
                 }
             }).then(response => {
@@ -96,13 +133,14 @@ export default RestClient = {
                 method: 'get',
                 url: API_ENDPOINT + "/Follow/Series/" + serieId + "/extended",
                 headers: {
-                    apikey: apikey,
+                    "apikey": apikey,
                     Authorization: "bearer " + token
                 }
             }).then(response => {
                 cb(response.data);
             }).catch(err => {
-                if(err) throw err;
+                console.log("err");
+                cb("error");
             });
         })
     },
@@ -112,7 +150,56 @@ export default RestClient = {
                 method: 'get',
                 url: API_ENDPOINT + "/Series/" + serieId + "/all",
                 headers: {
-                    apikey: apikey,
+                    "apikey": apikey,
+                    Authorization: "bearer " + token
+                }
+            }).then(response => {
+                cb(response.data);
+            }).catch(err => {
+                console.log("err");
+                cb("error");
+            });
+        });
+    },
+    watchEpisode: function(episodeId, cb) {
+        AuthService.getAuthorizationToken(token => {
+            axios({
+                method: "post",
+                url: API_ENDPOINT + "/Follow/Episodes/" + episodeId,
+                headers: {
+                    "apikey": apikey,
+                    Authorization: "bearer " + token
+                }
+            }).then(response => {
+                cb(response.data);
+            }).catch(err => {
+                if(err) throw err;
+            });
+        });
+    },
+    unwatchEpisode: function(episodeId, cb) {
+        AuthService.getAuthorizationToken(token => {
+            axios({
+                method: "delete",
+                url: API_ENDPOINT + "/Follow/Episodes/" + episodeId,
+                headers: {
+                    "apikey": apikey,
+                    Authorization: "bearer " + token
+                }
+            }).then(response => {
+                cb(response.data);
+            }).catch(err => {
+                if(err) throw err;
+            })
+        })
+    },
+    searchSerie: function(query, cb) {
+        AuthService.getAuthorizationToken(token => {
+            axios({
+                method: "get",
+                url: API_ENDPOINT + "/Series/Search?query=" + query,
+                headers: {
+                    "apikey": apikey,
                     Authorization: "bearer " + token
                 }
             }).then(response => {
@@ -122,4 +209,5 @@ export default RestClient = {
             });
         })
     },
+    
 }

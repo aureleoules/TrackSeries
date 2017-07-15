@@ -9,7 +9,8 @@ class MySeries extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            refreshing: false
+            refreshing: false,
+            series: []
         };
     }
     fetchSeries = (cb) => {
@@ -38,7 +39,6 @@ class MySeries extends React.Component {
     render() {
         return (
             <View>
-                {this.state.series && 
                 <FlatList
                     data={this.state.series}
                     renderItem={this.renderItem}
@@ -51,6 +51,8 @@ class MySeries extends React.Component {
                         />
                     }
                 />
+                {this.state.series.length < 1 &&
+                    <Text onPress={() => this.fetchSeries()} style={{marginTop: 15, fontSize: 18, fontFamily: "sans-serif-light", textAlign: "center"}}>You're following 0 tv shows.</Text>
                 }
                 <ActivityIndicator 
                     style={{alignSelf: 'center', marginTop: "60%"}}

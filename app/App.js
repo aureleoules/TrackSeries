@@ -6,6 +6,7 @@ import { Button } from 'react-native-elements'
 import {AsyncStorage} from 'react-native';
 import AuthService from './services/AuthService';
 import Login from './activities/Login';
+import Register from './activities/Register';
 import {Scene, Router} from 'react-native-router-flux';
 import SeriePage from './activities/SeriePage';
 
@@ -27,10 +28,6 @@ class App extends React.Component {
         this.setState({isAuth: true});
     }
 
-    removeToken = () => {
-        AuthService.signOut();
-    }
-
     render() {
         return (
                 // {/*<StatusBar backgroundColor="#154468"/>
@@ -42,6 +39,7 @@ class App extends React.Component {
                     <Scene key="root">
                         <Scene key="home" hideNavBar component={Tabbar} title="TrackSeries" initial={true}/>
                         <Scene key="login" hideNavBar component={Login} title="Login"/>
+                        <Scene key="register" hideNavBar component={Register} title="Register"/>
                         <Scene key="SeriePage" hideNavBar component={SeriePage} title="Serie"/>
                     </Scene>
                 </Router>

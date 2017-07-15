@@ -5,52 +5,48 @@ import { FormLabel, FormInput, Button} from 'react-native-elements'
 import AuthService from '../../services/AuthService';
 import { Actions } from 'react-native-router-flux';
 
-class Login extends React.Component {
+class Register extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
     }
-    signIn = () => {
-        if(!this.state.username || !this.state.password) {
-            ToastAndroid.show('Please provide your informations.', ToastAndroid.LONG);
+    signUp = () => {
+        if(!this.state.username || !this.state.password || !this.state.email) {
+            ToastAndroid.show('Please provide all the informations.', ToastAndroid.LONG);
         } else {
-            AuthService.signIn(this.state.username.trim(), this.state.password.trim(), result => {
+            AuthService.signUp(this.state.username.trim(), this.state.password.trim(), this.state.email.trim(), result => {
+                console.log(result);
                 if(result !== "error") {
-                    AuthService.saveToken(result.data.access_token);
-                    Actions.home({type: 'push'});
+                    ToastAndroid.show('Successfuly signed up. Please confirm your email address.', ToastAndroid.SHORT);
+                    this.goToLogin();            
                 } else {
-                    ToastAndroid.show('Wrong password.', ToastAndroid.LONG);
+                    ToastAndroid.show('Username or email already exists.', ToastAndroid.LONG);
                 }
             });
         }
     }
-
-    goToRegister = () => {
-        Actions.register({type: "push"});
+    goToLogin = () => {
+        Actions.login({type: "push"});
     }
     render() {
         return(
             <View style={{flex: 1, paddingTop: 69}}>
-                <Text style={styles.textTitle}>Sign In</Text>
+                <Text style={styles.textTitle}>Sign Up</Text>
                 <TitleBar logo/>
-                <FormLabel>USERNAME OR EMAIL</FormLabel>
+                <FormLabel>USERNAME</FormLabel>
                 <FormInput onChangeText={username => {this.setState({username})}} />
+                <FormLabel>EMAIL</FormLabel>
+                <FormInput onChangeText={email => {this.setState({email})}} />
                 <FormLabel>PASSWORD</FormLabel>
                 <FormInput secureTextEntry={true} onChangeText={password => {this.setState({password})}} />
                 <Button
-                    title='SIGN IN'
+                    title='SIGN UP'
                     large
                     buttonStyle={{backgroundColor: "#0F334F", marginTop: 5}}
-                    icon={{type:"font-awesome", name:'sign-in'}}
-                    onPress={() => this.signIn()}/>
+                    onPress={() => this.signUp()}/>
                     
                 <View style={{marginTop: 15}}>
-                    <Text style={styles.notMember}>Not a member?</Text>
-                    <Button
-                        title="CREATE AN ACCOUNT"
-                        onPress={() => this.goToRegister()}
-                        butonStyle={{backgroundColor: "#0F334F"}}
-                    />
+                    <Text onPress={() => this.goToLogin()} style={styles.notMember}>Already a member?</Text>
                 </View>
             </View>
         );
@@ -70,4 +66,4 @@ const styles = {
     }
 }
 
-export default Login;
+export default Register;
