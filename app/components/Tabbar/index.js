@@ -27,13 +27,13 @@ class Tabbar extends React.Component {
         AuthService.isAuthenticated(isAuth => {
             console.log(isAuth);
             if(!isAuth) {
-                Actions.login();
+                Actions.login({type: 'replace'});
             }
         });
     }
     logOut = () => {
         AuthService.signOut(() => {
-            Actions.login({type: 'push'});
+            Actions.login({type: 'reset'});
         });
     }
     askLogOutConfirmation = () => {

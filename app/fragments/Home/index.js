@@ -22,9 +22,7 @@ class Home extends React.Component {
     }
     makeEpisodes = () => {
         var episodes = [];
-        console.log(this.state.series);
         for(var i = 0; i < this.state.series.length; i++) {
-            console.log(this.state.series[i].episodes.length);
             for(var y = 0; y < this.state.series[i].episodes.length; y++) {
                 episodes.push(this.state.series[i].episodes[y]);
             }
@@ -44,7 +42,10 @@ class Home extends React.Component {
 
     renderItem({ item, index }, ctx) {
         return (
-            <Episode episode={item} refreshEpisodes={this.getEpisodes}/>
+            <View>
+                <Text style={styles.nextEpTxt}>Next episode of {item.name}:</Text>
+                <Episode containerStyle={styles.epStyle} episode={item.episodes[0]} refreshEpisodes={this.getEpisodes}/>
+            </View>   
         );
     }
 
@@ -70,7 +71,8 @@ class Home extends React.Component {
             <View>
                 {this.state.episodes && 
                 <FlatList
-                    data={this.state.episodes}
+                    style={{marginLeft: 15, marginRight: 15}}
+                    data={this.state.series}
                     renderItem={({item, index}) => this.renderItem({item, index}, this)}
                     keyExtractor={this._keyExtractor}
                     refreshControl={
@@ -85,6 +87,16 @@ class Home extends React.Component {
                 {this.getEmptyEpMessage()}
             </View>
         );
+    }
+}
+
+const styles = {
+    nextEpTxt: {
+        fontSize: 22,
+        fontFamily: "sans-serif-light",
+        textAlign: "center",
+        paddingTop: 15,
+        paddingBottom: 15
     }
 }
 

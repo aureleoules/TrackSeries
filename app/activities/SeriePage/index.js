@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, ScrollView, ActivityIndicator, Image, FlatList, TouchableOpacity, ListView} from 'react-native';
+import {View, ScrollView, ActivityIndicator, Image, FlatList, TouchableOpacity, ListView, BackHandler} from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import TitleBar from '../../components/TitleBar';
 import Episode from '../../components/Episode';
@@ -15,8 +15,15 @@ class SeriePage extends React.Component {
             selectedSeason: 0
         };
     }
-    componentWillMount() {
+    componentDidMount() {
         this.getSeries();
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', function() {
+            console.log("unmount");   
+            return false; 
+        });
     }
 
     getSeries = () => {

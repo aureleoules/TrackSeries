@@ -31,7 +31,6 @@ class Episode extends React.Component {
         return (
             <Tile
                 activeOpacity={0.8}
-                contentContainerStyle={{margin: 10}}
                 imageSrc={{uri:item.image}}
                 title={item.title}
                 titleStyle={{fontFamily: "sans-serif-thin"}}

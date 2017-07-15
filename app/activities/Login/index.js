@@ -17,7 +17,7 @@ class Login extends React.Component {
             AuthService.signIn(this.state.username.trim(), this.state.password.trim(), result => {
                 if(result !== "error") {
                     AuthService.saveToken(result.data.access_token);
-                    Actions.home({type: 'push'});
+                    Actions.home({type: 'replace'});
                 } else {
                     ToastAndroid.show('Wrong password.', ToastAndroid.LONG);
                 }
