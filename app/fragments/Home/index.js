@@ -71,7 +71,6 @@ class Home extends React.Component {
             <View>
                 {this.state.episodes && 
                 <FlatList
-                    style={{marginLeft: 15, marginRight: 15}}
                     data={this.state.series}
                     renderItem={({item, index}) => this.renderItem({item, index}, this)}
                     keyExtractor={this._keyExtractor}

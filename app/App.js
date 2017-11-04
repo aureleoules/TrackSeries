@@ -35,10 +35,6 @@ class App extends React.Component {
 
     render() {
         return (
-                // {/*<StatusBar backgroundColor="#154468"/>
-                // <TitleBar/>
-                // {this.state.isAuth && <Tabbar/>}
-                // {this.state.isAuth == false && <Login setLoggedIn={this.setLoggedIn}/>}*/}
             <View style={{flex: 1, backgroundColor: "#F0F3F4"}}>
                 <Router>
                     <Scene key="root">
